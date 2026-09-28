@@ -1,7 +1,7 @@
 const bedrock = require('bedrock-protocol');
 
-const HOST = process.env.MC_HOST || '144.31.46.4';
-const PORT = parseInt(process.env.MC_PORT || '10167');
+const HOST = process.env.MC_HOST || '144.31.46.8';
+const PORT = parseInt(process.env.MC_PORT || '14531');
 const USERNAME = process.env.MC_USERNAME || 'geforce';
 const RECONNECT_DELAY = parseInt(process.env.RECONNECT_DELAY || '30000');
 

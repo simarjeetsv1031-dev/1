@@ -8,8 +8,8 @@ Variáveis de ambiente (opcionais, já com valores padrão):
 
 | Variável | Padrão | Descrição |
 |---|---|---|
-| `MC_HOST` | `144.31.46.4` | IP do servidor |
-| `MC_PORT` | `10167` | Porta do servidor |
+| `MC_HOST` | `144.31.46.8` | IP do servidor |
+| `MC_PORT` | `14531` | Porta primária do servidor |
 | `MC_USERNAME` | `geforce` | Nome do bot |
 | `RECONNECT_DELAY` | `30000` | Delay de reconexão em ms |
 
