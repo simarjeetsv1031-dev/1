@@ -1,8 +1,8 @@
 const bedrock = require('bedrock-protocol');
 
-const HOST = process.env.MC_HOST || '144.31.46.8';
-const PORT = parseInt(process.env.MC_PORT || '14531');
-const USERNAME = process.env.MC_USERNAME || 'geforce';
+const HOST = process.env.MC_HOST || '157.90.5.77';
+const PORT = parseInt(process.env.MC_PORT || '11160');
+const USERNAME = process.env.MC_USERNAME || 'Bot';
 const RECONNECT_DELAY = parseInt(process.env.RECONNECT_DELAY || '30000');
 
 let client = null;
@@ -27,7 +27,7 @@ function createBot() {
       port: PORT,
       username: USERNAME,
       offline: true,
-      version: '1.26.30' // Forçar a versão que detectamos
+      version: '1.26.50' // Forçar a versão que detectamos
     });
 
     client.on('join', () => {
