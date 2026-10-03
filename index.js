@@ -97,6 +97,22 @@ process.on('unhandledRejection', (reason, promise) => {
   log(`🔥 Rejeição não tratada: ${reason}`);
   scheduleReconnect();
 });
+client.on('resource_packs_info', (packet) => {
+  // Tell the server the bot has accepted the packs
+  client.write('resource_pack_client_response', {
+    response_status: 'accepted',
+    resourcepack_ids: []
+  });
+});
+
+client.on('resource_pack_stack', (packet) => {
+  // Tell the server the bot has successfully loaded the packs into memory
+  client.write('resource_pack_client_response', {
+    response_status: 'completed',
+    resourcepack_ids: []
+  });
+});
+
 
 log('🚀 Iniciando bot AFK Minecraft BEDROCK (v1.26.30)...');
 log(`   Servidor : ${HOST}:${PORT}`);
