@@ -26,8 +26,7 @@ function createBot() {
       host: HOST,
       port: PORT,
       username: USERNAME,
-      offline: true,
-      version: '1.26.50' // Forçar a versão que detectamos
+      offline: true, // Forçar a versão que detectamos
     });
 
     // --- FIX: RESOURCE PACK HANDLERS INSIDE createBot() ---
