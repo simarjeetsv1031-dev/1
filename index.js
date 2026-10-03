@@ -30,6 +30,34 @@ function createBot() {
       version: '1.26.50' // Forçar a versão que detectamos
     });
 
+    // --- FIX: RESOURCE PACK HANDLERS INSIDE createBot() ---
+    client.on('resource_packs_info', (packet) => {
+      log('📦 Recebidas informações de pacotes de textura. Aceitando...');
+      
+      // Extract pack IDs from server to mirror them back
+      const packIds = (packet.resource_packs || []).map(pack => pack.uuid);
+      
+      client.write('resource_pack_client_response', {
+        response_status: 'accepted',
+        resourcepack_ids: packIds
+      });
+    });
+
+    client.on('resource_pack_stack', (packet) => {
+      log('📦 Carregando pacotes de textura na memória...');
+      
+      // Extract pack IDs from stack to mirror them back
+      const packIds = (packet.behavior_packs || [])
+        .map(pack => pack.uuid)
+        .concat((packet.resource_packs || []).map(pack => pack.uuid));
+
+      client.write('resource_pack_client_response', {
+        response_status: 'completed',
+        resourcepack_ids: packIds
+      });
+    });
+    // --- END OF FIX ---
+
     client.on('join', () => {
       log(`✅ Bot entrou no servidor Bedrock com sucesso!`);
     });
@@ -49,7 +77,6 @@ function createBot() {
     });
 
     client.on('kick', (reason) => {
-      // Tentar extrair o motivo do kick de forma legível
       let kickReason = reason;
       if (typeof reason === 'object') {
         try {
@@ -87,7 +114,7 @@ function scheduleReconnect() {
   }, RECONNECT_DELAY);
 }
 
-// Prevenir que o processo morra por erros não capturados (o erro fatal do print)
+// Prevenir que o processo morra por erros não capturados
 process.on('uncaughtException', (err) => {
   log(`🔥 Erro não capturado (evitando crash): ${err.message}`);
   scheduleReconnect();
@@ -97,22 +124,6 @@ process.on('unhandledRejection', (reason, promise) => {
   log(`🔥 Rejeição não tratada: ${reason}`);
   scheduleReconnect();
 });
-client.on('resource_packs_info', (packet) => {
-  // Tell the server the bot has accepted the packs
-  client.write('resource_pack_client_response', {
-    response_status: 'accepted',
-    resourcepack_ids: []
-  });
-});
-
-client.on('resource_pack_stack', (packet) => {
-  // Tell the server the bot has successfully loaded the packs into memory
-  client.write('resource_pack_client_response', {
-    response_status: 'completed',
-    resourcepack_ids: []
-  });
-});
-
 
 log('🚀 Iniciando bot AFK Minecraft BEDROCK (v1.26.30)...');
 log(`   Servidor : ${HOST}:${PORT}`);
