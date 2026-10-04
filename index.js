@@ -45,11 +45,15 @@ function createBot() {
     client.on('resource_pack_stack', (packet) => {
       log('📦 Carregando pacotes de textura na memória...');
       
-      // Extract pack IDs from stack to mirror them back
-      const packIds = (packet.behavior_packs || [])
-        .map(pack => pack.uuid)
-        .concat((packet.resource_packs || []).map(pack => pack.uuid));
-
+      // Safely extract pack IDs from stack arrays
+      const packIds = [];
+      if (Array.isArray(packet.behavior_packs)) {
+        packet.behavior_packs.forEach(pack => pack.uuid && packIds.push(pack.uuid));
+      }
+      if (Array.isArray(packet.resource_packs)) {
+        packet.resource_packs.forEach(pack => pack.uuid && packIds.push(pack.uuid));
+      }
+      
       client.write('resource_pack_client_response', {
         response_status: 'completed',
         resourcepack_ids: packIds
@@ -125,6 +129,6 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 log('🚀 Iniciando bot AFK Minecraft BEDROCK (v1.26.30)...');
-log(`   Servidor : ${HOST}:${PORT}`);
-log(`   Username : ${USERNAME}`);
+log(`    Servidor : ${HOST}:${PORT}`);
+log(`    Username : ${USERNAME}`);
 createBot();
